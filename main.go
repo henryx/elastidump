@@ -1,11 +1,22 @@
 package main
 
-import "gopkg.in/alecthomas/kingpin.v2"
+import (
+	"fmt"
+	"gopkg.in/alecthomas/kingpin.v2"
+	"net/url"
+	"strconv"
+)
 
 const VERSION = "0.0.1"
 
 func dump(host *string, port *int, index *string) {
+	uri := &url.URL{
+		Scheme: "http",
+		Host:   *host + ":" + strconv.Itoa(*port),
+		Path:   *index,
+	}
 
+	fmt.Println("GET", uri)
 }
 
 func main() {
