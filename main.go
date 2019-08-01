@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -22,11 +24,13 @@ func dump(host *string, port *int, index *string) {
 		Path:   *index,
 	}
 
-	_, err := netClient.Get(uri.String())
+	resp, err := netClient.Get(uri.String())
 	if err != nil {
 		log.Fatal("Error when connecting to Elasticsearch:", err)
 	}
 
+	buffer, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(buffer))
 }
 
 func main() {
