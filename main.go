@@ -26,13 +26,7 @@ func dial(url string) *http.Response {
 	return resp
 }
 
-func dump(host *string, port *int, index *string) {
-	uri := &url.URL{
-		Scheme: "http",
-		Host:   *host + ":" + strconv.Itoa(*port),
-		Path:   *index + "/_search",
-	}
-
+func dump(uri *url.URL) {
 	resp := dial(uri.String())
 
 	buffer, _ := ioutil.ReadAll(resp.Body)
@@ -56,5 +50,11 @@ func main() {
 	kingpin.Version(VERSION)
 	kingpin.Parse()
 
-	dump(host, port, index)
+	uri := &url.URL{
+		Scheme: "http",
+		Host:   *host + ":" + strconv.Itoa(*port),
+		Path:   *index + "/_search",
+	}
+
+	dump(uri)
 }
