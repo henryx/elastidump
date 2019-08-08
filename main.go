@@ -17,6 +17,15 @@ var netClient = &http.Client{
 	Timeout: time.Second * 10,
 }
 
+func dial(url string) *http.Response {
+	resp, err := netClient.Get(url)
+	if err != nil {
+		log.Fatal("Error when connecting to Elasticsearch:", err)
+	}
+
+	return resp
+}
+
 func dump(host *string, port *int, index *string) {
 	uri := &url.URL{
 		Scheme: "http",
@@ -24,10 +33,7 @@ func dump(host *string, port *int, index *string) {
 		Path:   *index + "/_search",
 	}
 
-	resp, err := netClient.Get(uri.String())
-	if err != nil {
-		log.Fatal("Error when connecting to Elasticsearch:", err)
-	}
+	resp := dial(uri.String())
 
 	buffer, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(buffer))
