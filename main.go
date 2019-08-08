@@ -21,7 +21,7 @@ func dump(host *string, port *int, index *string) {
 	uri := &url.URL{
 		Scheme: "http",
 		Host:   *host + ":" + strconv.Itoa(*port),
-		Path:   *index,
+		Path:   *index + "/_search",
 	}
 
 	resp, err := netClient.Get(uri.String())
