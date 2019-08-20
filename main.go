@@ -46,7 +46,7 @@ type response struct {
 	Hits     hits   `json:"hits"`
 }
 
-func dial(url string) *http.Response {
+func dialGet(url string) *http.Response {
 	resp, err := netClient.Get(url)
 	if err != nil {
 		log.Fatal("Error when connecting to Elasticsearch:", err)
@@ -58,7 +58,7 @@ func dial(url string) *http.Response {
 func size(uri *url.URL) int {
 	var data response
 
-	resp := dial(uri.String())
+	resp := dialGet(uri.String())
 	buffer, _ := ioutil.ReadAll(resp.Body)
 	_ = json.Unmarshal(buffer, &data)
 
@@ -68,7 +68,7 @@ func size(uri *url.URL) int {
 func dump(uri *url.URL) {
 	var data response
 
-	resp := dial(uri.String())
+	resp := dialGet(uri.String())
 	buffer, _ := ioutil.ReadAll(resp.Body)
 	_ = json.Unmarshal(buffer, &data)
 
