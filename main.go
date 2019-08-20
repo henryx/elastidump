@@ -106,6 +106,8 @@ func main() {
 	uri.RawQuery = "size=1"
 	total := size(uri)
 
-	uri.RawQuery = "size=" + strconv.Itoa(total)
-	dump(uri)
+	if total <= 10000 {
+		uri.RawQuery = "size=" + strconv.Itoa(total)
+		dump(uri)
+	}
 }
