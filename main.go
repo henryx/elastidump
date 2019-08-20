@@ -71,10 +71,16 @@ func size(uri *url.URL) int {
 }
 
 func dump(uri *url.URL) {
-	resp := dial(uri.String())
+	var data response
 
+	resp := dial(uri.String())
 	buffer, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(buffer))
+	_ = json.Unmarshal(buffer, &data)
+
+	for _, hit := range data.Hits.Hits {
+		document, _ := json.Marshal(hit.Source)
+		fmt.Println(string(document))
+	}
 }
 
 func main() {
