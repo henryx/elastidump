@@ -18,6 +18,26 @@ var netClient = &http.Client{
 	Timeout: time.Second * 10,
 }
 
+type shards struct {
+	Total      int `json:"total"`
+	Successful int `json:"successful"`
+	Skipped    int `json:"skipped"`
+	Failed     int `json:"failed"`
+}
+
+type hits struct {
+	Total    int                      `json:"total"`
+	MaxScore float32                  `json:"max_score"`
+	Hits     []map[string]interface{} `json:"hits,omitempty"`
+}
+
+type response struct {
+	Took     int    `json:"took"`
+	TimedOut bool   `json:"timed_out"`
+	Shards   shards `json:"_shards"`
+	Hits     hits   `json:"hits"`
+}
+
 func dial(url string) *http.Response {
 	resp, err := netClient.Get(url)
 	if err != nil {
@@ -28,7 +48,7 @@ func dial(url string) *http.Response {
 }
 
 func size(uri *url.URL) int {
-	var data map[string]interface{}
+	var data response
 	uri.RawQuery = "size=1"
 	uri.ForceQuery = true
 
