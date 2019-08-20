@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"io/ioutil"
@@ -24,6 +25,21 @@ func dial(url string) *http.Response {
 	}
 
 	return resp
+}
+
+func size(uri *url.URL) int {
+	var data map[string]interface{}
+	uri.RawQuery = "size=1"
+	uri.ForceQuery = true
+
+	resp := dial(uri.String())
+	buffer, _ := ioutil.ReadAll(resp.Body)
+
+	_ = json.Unmarshal(buffer, &data)
+
+	// TODO: retrieve index size
+	log.Println(data)
+	return 0
 }
 
 func dump(uri *url.URL) {
@@ -56,5 +72,6 @@ func main() {
 		Path:   *index + "/_search",
 	}
 
+	size(uri)
 	dump(uri)
 }
