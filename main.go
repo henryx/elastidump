@@ -18,6 +18,14 @@ var netClient = &http.Client{
 	Timeout: time.Second * 10,
 }
 
+type hitData struct {
+	Index  string                 `json:"_index"`
+	Type   string                 `json:"_type"`
+	Id     string                 `json:"_id"`
+	Score  float64                `json:"_score"`
+	Source map[string]interface{} `json:"_source,omitempty"`
+}
+
 type shards struct {
 	Total      int `json:"total"`
 	Successful int `json:"successful"`
@@ -26,9 +34,9 @@ type shards struct {
 }
 
 type hits struct {
-	Total    int                      `json:"total"`
-	MaxScore float32                  `json:"max_score"`
-	Hits     []map[string]interface{} `json:"hits,omitempty"`
+	Total    int       `json:"total"`
+	MaxScore float64   `json:"max_score"`
+	Hits     []hitData `json:"hits,omitempty"`
 }
 
 type response struct {
