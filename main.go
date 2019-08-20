@@ -57,8 +57,6 @@ func dial(url string) *http.Response {
 
 func size(uri *url.URL) int {
 	var data response
-	uri.RawQuery = "size=1"
-	uri.ForceQuery = true
 
 	resp := dial(uri.String())
 	buffer, _ := ioutil.ReadAll(resp.Body)
@@ -98,12 +96,16 @@ func main() {
 	kingpin.Parse()
 
 	uri := &url.URL{
-		Scheme: "http",
-		Host:   *host + ":" + strconv.Itoa(*port),
-		Path:   *index + "/_search",
+		Scheme:     "http",
+		Host:       *host + ":" + strconv.Itoa(*port),
+		Path:       *index + "/_search",
+		ForceQuery: true,
 	}
 
-	// TODO: retrieve size and use scroll API
-	size(uri)
+	// TODO: use scroll API
+	uri.RawQuery = "size=1"
+	total := size(uri)
+
+	uri.RawQuery = "size=" + strconv.Itoa(total)
 	dump(uri)
 }
