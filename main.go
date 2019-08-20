@@ -62,12 +62,9 @@ func size(uri *url.URL) int {
 
 	resp := dial(uri.String())
 	buffer, _ := ioutil.ReadAll(resp.Body)
-
 	_ = json.Unmarshal(buffer, &data)
 
-	// TODO: retrieve index size
-	log.Println(data)
-	return 0
+	return data.Hits.Total
 }
 
 func dump(uri *url.URL) {
@@ -106,6 +103,7 @@ func main() {
 		Path:   *index + "/_search",
 	}
 
+	// TODO: retrieve size and use scroll API
 	size(uri)
 	dump(uri)
 }
