@@ -23,7 +23,7 @@ type hitData struct {
 	Type   string                 `json:"_type"`
 	Id     string                 `json:"_id"`
 	Score  float64                `json:"_score"`
-	Source map[string]interface{} `json:"_source,omitempty"`
+	Source map[string]interface{} `json:"_source,string,omitempty"`
 }
 
 type shards struct {
@@ -76,7 +76,7 @@ func dump(uri *url.URL) {
 
 	for _, hit := range data.Hits.Hits {
 		document, _ := json.Marshal(hit.Source)
-		fmt.Println(string(document))
+		fmt.Printf("%s\n", string(document))
 	}
 }
 
