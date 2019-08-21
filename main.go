@@ -77,7 +77,7 @@ func size(uri *url.URL) int {
 	return data.Hits.Total
 }
 
-func extractData(uri *url.URL) {
+func extractData(uri *url.URL) []hitData {
 	var data response
 
 	resp := dialGet(uri.String())
@@ -89,10 +89,7 @@ func extractData(uri *url.URL) {
 
 	_ = json.Unmarshal(buffer, &data)
 
-	for _, hit := range data.Hits.Hits {
-		document, _ := json.Marshal(hit.Source)
-		fmt.Printf("%s\n", string(document))
-	}
+	return data.Hits.Hits
 }
 
 func extractScroll(uri *url.URL, query string) (string, []hitData) {
