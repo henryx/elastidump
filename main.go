@@ -21,7 +21,7 @@ import (
 	"time"
 )
 
-const VERSION = "0.0.1"
+const VERSION = "1.0.0"
 
 var netClient = &http.Client{
 	Timeout: time.Second * 10,
