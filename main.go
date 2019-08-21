@@ -131,7 +131,6 @@ func main() {
 		ForceQuery: false,
 	}
 
-	// TODO: use scroll API
 	uri.RawQuery = "size=1"
 	total := size(uri)
 
