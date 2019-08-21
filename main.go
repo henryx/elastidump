@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -48,6 +49,15 @@ type response struct {
 
 func dialGet(url string) *http.Response {
 	resp, err := netClient.Get(url)
+	if err != nil {
+		log.Fatal("Error when connecting to Elasticsearch:", err)
+	}
+
+	return resp
+}
+
+func dialPost(url string, r io.Reader) *http.Response {
+	resp, err := netClient.Post(url, "application/json; charset=utf-8", r)
 	if err != nil {
 		log.Fatal("Error when connecting to Elasticsearch:", err)
 	}
