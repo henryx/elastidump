@@ -137,7 +137,12 @@ func main() {
 
 	if total <= 10000 {
 		uri.RawQuery = "size=" + strconv.Itoa(total)
-		extractData(uri)
+		data := extractData(uri)
+
+		for _, hit := range data {
+			document, _ := json.Marshal(hit.Source)
+			fmt.Printf("%s\n", string(document))
+		}
 	} else {
 		uri.RawQuery = "scroll=10m"
 
