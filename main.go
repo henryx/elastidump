@@ -121,7 +121,7 @@ func main() {
 		Scheme:     "http",
 		Host:       *host + ":" + strconv.Itoa(*port),
 		Path:       *index + "/_search",
-		ForceQuery: true,
+		ForceQuery: false,
 	}
 
 	// TODO: use scroll API
@@ -140,7 +140,10 @@ func main() {
 			if len(data) == 0 {
 				break
 			} else {
-				query = fmt.Sprintf(`{"scroll": "10m", "scroll_id" "%s"}`, id)
+				uri.RawQuery = ""
+				uri.Path = "_search/scroll"
+
+				query = fmt.Sprintf(`{"scroll": "10m", "scroll_id": "%s"}`, id)
 			}
 
 			for _, hit := range data {
