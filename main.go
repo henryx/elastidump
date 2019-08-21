@@ -1,3 +1,10 @@
+/*
+   Copyright (C) 2019 Enrico Bianchi (enrico.bianchi@gmail.com)
+   Project       elastidump
+   Description   An Elasticsearch dump index
+   License       GPL version 2 (see LICENSE for details)
+*/
+
 package main
 
 import (
