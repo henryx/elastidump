@@ -107,6 +107,13 @@ func extractScroll(uri *url.URL, query string) (string, []hitData) {
 	return data.ScrollId, data.Hits.Hits
 }
 
+func write(data []hitData) {
+	for _, hit := range data {
+		document, _ := json.Marshal(hit.Source)
+		fmt.Printf("%s\n", string(document))
+	}
+}
+
 func main() {
 	host := kingpin.Flag("host", "Set the Elasticsearch host (default localhost)").
 		Short('H').
@@ -138,10 +145,7 @@ func main() {
 		uri.RawQuery = "size=" + strconv.Itoa(total)
 		data := extractData(uri)
 
-		for _, hit := range data {
-			document, _ := json.Marshal(hit.Source)
-			fmt.Printf("%s\n", string(document))
-		}
+		write(data)
 	} else {
 		uri.RawQuery = "scroll=10m"
 
@@ -157,10 +161,7 @@ func main() {
 				query = fmt.Sprintf(`{"scroll": "10m", "scroll_id": "%s"}`, id)
 			}
 
-			for _, hit := range data {
-				document, _ := json.Marshal(hit.Source)
-				fmt.Printf("%s\n", string(document))
-			}
+			write(data)
 		}
 	}
 }
