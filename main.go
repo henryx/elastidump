@@ -42,6 +42,7 @@ type hits struct {
 }
 
 type response struct {
+	ScrollId string `json:"_scroll_id,omitempty"`
 	Took     int    `json:"took"`
 	TimedOut bool   `json:"timed_out"`
 	Shards   shards `json:"_shards"`
