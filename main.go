@@ -77,7 +77,7 @@ func size(uri *url.URL) int {
 	return data.Hits.Total
 }
 
-func dump(uri *url.URL) {
+func extractData(uri *url.URL) {
 	var data response
 
 	resp := dialGet(uri.String())
@@ -95,7 +95,7 @@ func dump(uri *url.URL) {
 	}
 }
 
-func dumpScroll(uri *url.URL, query string) (string, []hitData) {
+func extractScroll(uri *url.URL, query string) (string, []hitData) {
 	var data response
 
 	resp := dialPost(uri.String(), bytes.NewBuffer([]byte(query)))
@@ -140,13 +140,13 @@ func main() {
 
 	if total <= 10000 {
 		uri.RawQuery = "size=" + strconv.Itoa(total)
-		dump(uri)
+		extractData(uri)
 	} else {
 		uri.RawQuery = "scroll=10m"
 
 		query := `{"size": 100, "query": {"match_all": {}}}`
 		for {
-			id, data := dumpScroll(uri, query)
+			id, data := extractScroll(uri, query)
 			if len(data) == 0 {
 				break
 			} else {
