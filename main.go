@@ -90,11 +90,14 @@ func dump(uri *url.URL) {
 	}
 }
 
-func dumpScroll(uri *url.URL, query string) {
+func dumpScroll(uri *url.URL, query string) (string, []hitData) {
+	var data response
+
 	resp := dialPost(uri.String(), bytes.NewBuffer([]byte(query)))
 	buffer, _ := ioutil.ReadAll(resp.Body)
+	_ = json.Unmarshal(buffer, &data)
 
-	fmt.Println(string(buffer))
+	return data.ScrollId, data.Hits.Hits
 }
 
 func main() {
