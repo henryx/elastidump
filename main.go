@@ -135,6 +135,18 @@ func main() {
 		uri.RawQuery = "scroll=10m"
 
 		query := `{"size": 100, "query": {"match_all": {}}}`
-		dumpScroll(uri, query)
+		for {
+			id, data := dumpScroll(uri, query)
+			if len(data) == 0 {
+				break
+			} else {
+				query = fmt.Sprintf(`{"scroll": "10m", "scroll_id" "%s"}`, id)
+			}
+
+			for _, hit := range data {
+				document, _ := json.Marshal(hit.Source)
+				fmt.Printf("%s\n", string(document))
+			}
+		}
 	}
 }
