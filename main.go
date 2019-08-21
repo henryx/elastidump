@@ -81,7 +81,12 @@ func dump(uri *url.URL) {
 	var data response
 
 	resp := dialGet(uri.String())
+
 	buffer, _ := ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		log.Fatal("Query error: ", string(buffer))
+	}
+
 	_ = json.Unmarshal(buffer, &data)
 
 	for _, hit := range data.Hits.Hits {
@@ -94,7 +99,12 @@ func dumpScroll(uri *url.URL, query string) (string, []hitData) {
 	var data response
 
 	resp := dialPost(uri.String(), bytes.NewBuffer([]byte(query)))
+
 	buffer, _ := ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		log.Fatal("Query error: ", string(buffer))
+	}
+
 	_ = json.Unmarshal(buffer, &data)
 
 	return data.ScrollId, data.Hits.Hits
