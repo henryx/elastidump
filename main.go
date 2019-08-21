@@ -127,5 +127,10 @@ func main() {
 	if total <= 10000 {
 		uri.RawQuery = "size=" + strconv.Itoa(total)
 		dump(uri)
+	} else {
+		uri.RawQuery = "scroll=10m"
+
+		query := `{"size": 100, "query": {"match_all": {}}}`
+		dumpScroll(uri, query)
 	}
 }
