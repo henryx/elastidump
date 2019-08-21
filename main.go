@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -86,6 +87,13 @@ func dump(uri *url.URL) {
 		document, _ := json.Marshal(hit.Source)
 		fmt.Printf("%s\n", string(document))
 	}
+}
+
+func dumpScroll(uri *url.URL, query string) {
+	resp := dialPost(uri.String(), bytes.NewBuffer([]byte(query)))
+	buffer, _ := ioutil.ReadAll(resp.Body)
+
+	fmt.Println(string(buffer))
 }
 
 func main() {
